@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente de Limpieza de Planillas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Data<span>Clean</span></h1>
+            <p>Asistente inteligente de limpieza y estructuración de planillas</p>
+        </header>
+
+        <main>
+            <div class="upload-card" id="drop-area">
+
+                <!-- Estado: formulario de carga -->
+                <div class="upload-form" id="upload-form">
+
+                    <!-- Área clickeable para seleccionar archivo -->
+                    <div class="upload-clickable" id="upload-clickable">
+                        <div class="icon-container">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h2>Arrastrá tu planilla aquí</h2>
+                        <p class="subtitle">o hacé clic para seleccionar (.xlsx, .xls, .csv)</p>
+                    </div>
+
+                    <!-- Panel de opciones de limpieza -->
+                    <details class="options-panel" id="options-panel">
+                        <summary class="options-summary">Opciones de limpieza</summary>
+                        <div class="options-grid">
+                            <label class="option-item">
+                                <input type="checkbox" name="normalizar_texto" checked>
+                                <span class="option-label">
+                                    <strong>Normalizar capitalización</strong>
+                                    <small>Corrige mayúsculas, espacios extra y formato de título</small>
+                                </span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="eliminar_duplicados" checked>
+                                <span class="option-label">
+                                    <strong>Eliminar filas duplicadas</strong>
+                                    <small>Remueve filas 100% idénticas en todas sus columnas</small>
+                                </span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="unificar_variantes" checked>
+                                <span class="option-label">
+                                    <strong>Unificar variantes similares</strong>
+                                    <small>Fusiona valores casi idénticos (ej: "Kangoo" y "kangoo ")</small>
+                                </span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="detectar_fechas" checked>
+                                <span class="option-label">
+                                    <strong>Detectar fechas automáticamente</strong>
+                                    <small>Convierte columnas de texto que contienen fechas</small>
+                                </span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="normalizar_emails" checked>
+                                <span class="option-label">
+                                    <strong>Normalizar emails</strong>
+                                    <small>Pasa a minúsculas y detecta formatos inválidos</small>
+                                </span>
+                            </label>
+                            <label class="option-item">
+                                <input type="checkbox" name="detectar_outliers" checked>
+                                <span class="option-label">
+                                    <strong>Detectar valores atípicos</strong>
+                                    <small>Reporta números que se alejan del rango normal (IQR)</small>
+                                </span>
+                            </label>
+                        </div>
+                    </details>
+
+                    <input type="file" id="file-input" name="file" accept=".csv,.xlsx,.xls,.xlsm,.xlsb,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.ms-excel.sheet.binary.macroEnabled.12">
+                </div>
+
+                <!-- Estado: cargando -->
+                <div class="loading-state" id="loading-state" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Procesando datos y limpiando celdas...</p>
+                </div>
+
+                <!-- Estado: éxito -->
+                <div class="success-state" id="success-state" style="display: none;">
+                    <div class="icon-container success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h2>¡Planilla lista!</h2>
+                    <p>Se generó el archivo limpio con KPIs y observaciones detalladas.</p>
+                    <a href="#" id="download-btn" class="btn-primary">Descargar Excel Limpio</a>
+                    <br>
+                    <button class="btn-secondary" onclick="resetForm()">Procesar otra planilla</button>
+                </div>
+
+                <!-- Estado: error -->
+                <div class="error-state" id="error-state" style="display: none;">
+                    <p id="error-message" class="error-text">Ocurrió un error.</p>
+                    <button class="btn-secondary" onclick="resetForm()">Intentar de nuevo</button>
+                </div>
+            </div>
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">✨</div>
+                    <div>
+                        <h3>Normalización</h3>
+                        <p>Corrección automática de espacios, capitalización, emails y teléfonos.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div>
+                        <h3>Indicadores</h3>
+                        <p>Resumen inmediato de métricas de sanidad (nulos, duplicados, outliers).</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💡</div>
+                    <div>
+                        <h3>Sugerencias</h3>
+                        <p>Detección de variantes tipográficas y valores que requieren revisión.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANTES / DESPUÉS -->
+            <section class="section alt" id="ejemplo">
+                <h2>Antes y Después de Limpiar</h2>
+                <p>Veamos un ejemplo simplificado de cómo la herramienta procesa los datos desordenados:</p>
+
+                <div class="grid-2 tables">
+                    <div>
+                        <h3>Antes (Tu exportación)</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Categoría</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>juan perez </td>
+                                        <td>JUAN@GMAIL.COM</td>
+                                        <td>auto </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Juan Pérez</td>
+                                        <td>juan@gmail.com</td>
+                                        <td>Autos</td>
+                                    </tr>
+                                    <tr>
+                                        <td>J. Perez</td>
+                                        <td> </td>
+                                        <td>Autos</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>Después (El archivo Limpio)</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Categoría</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Juan Perez</td>
+                                        <td>juan@gmail.com</td>
+                                        <td>Autos</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Juan Pérez</td>
+                                        <td>juan@gmail.com</td>
+                                        <td>Autos</td>
+                                    </tr>
+                                    <tr>
+                                        <td>J. Perez</td>
+                                        <td></td>
+                                        <td>Autos</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="small-note">Además de este Excel, la herramienta genera la pestaña "KPIs" con estadísticas e insights automáticos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROCESO -->
+            <section class="section" id="instrucciones">
+                <h2>¿Cómo uso la herramienta?</h2>
+                <ol class="steps">
+                    <li><strong>1. Exportá tu Excel o CSV</strong> desde el CRM de la concesionaria, facturación o Pilot.</li>
+                    <li><strong>2. Configurá las opciones</strong> (o dejá todo activado para usar los valores recomendados).</li>
+                    <li><strong>3. Arrastrá el archivo</strong> al recuadro principal de esta misma pantalla.</li>
+                    <li><strong>4. Descargá el reporte</strong> y abrí la pestaña "KPIs" para leer los insights automáticos.</li>
+                </ol>
+            </section>
+
+            <!-- FAQ -->
+            <section class="section alt" id="faq">
+                <h2>Preguntas Frecuentes</h2>
+
+                <div class="faq-item">
+                    <h3>¿Qué tamaño o cantidad de filas soporta?</h3>
+                    <p>El sistema puede procesar de forma robusta hasta 100.000 filas sin generar cuelgues. Para archivos muy grandes se recomienda dividir en hojas de hasta 50.000 filas.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>¿Tengo que configurar qué columnas limpiar manualmente?</h3>
+                    <p>No. El sistema detecta automáticamente el tipo de cada columna (email, teléfono, fecha, moneda, categoría) y aplica la normalización correspondiente sin intervención manual.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>¿Qué hace exactamente la pestaña KPIs?</h3>
+                    <p>Genera indicadores de gestión por columna: evolución histórica por mes para fechas, distribución de estados, top 5 categorías, sumas y promedios financieros, y dominios de email más frecuentes.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>¿Los archivos quedan guardados en el servidor?</h3>
+                    <p>No. Tanto el archivo original como el procesado se eliminan automáticamente del servidor al terminar la descarga. Tus datos no se almacenan.</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

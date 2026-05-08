@@ -1,0 +1,38 @@
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ── Entorno virtual ───────────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+
+# ── Variables de entorno ──────────────────────────────────────────────────────
+# .env.example SÍ se sube; .env NO (contiene claves reales)
+.env
+
+# ── Archivos de datos (pueden contener información sensible) ──────────────────
+uploads/
+*.xlsx
+*.xls
+*.xlsm
+*.xlsb
+*.csv
+*.mp4
+
+# ── Sistema operativo ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDEs ─────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.code-workspace
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/

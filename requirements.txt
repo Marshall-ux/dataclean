@@ -1,0 +1,10 @@
+flask
+flask-cors
+pandas
+openpyxl
+xlsxwriter
+xlrd
+pyxlsb
+werkzeug
+rapidfuzz
+python-dotenv
