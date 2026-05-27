@@ -118,4 +118,5 @@ def download_file(filename: str):
 if __name__ == "__main__":
     debug = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
     port = int(os.environ.get("PORT", 5001))
-    app.run(debug=debug, port=port)
+    # Necesario para Docker: escuchar en todas las interfaces del contenedor.
+    app.run(host="0.0.0.0", debug=debug, port=port)

@@ -129,6 +129,11 @@ class MotorLimpieza:
         no_nulos = series.dropna()
         if no_nulos.empty:
             return None
+        # Guard: pd.to_datetime(0) = 1970-01-01, por lo que columnas numéricas (cantidades,
+        # precios, etc.) quedarían mal convertidas. Si ≥ 50 % de los valores son numéricos,
+        # no es una columna de fechas.
+        if pd.to_numeric(no_nulos, errors="coerce").notna().sum() / len(no_nulos) >= 0.5:
+            return None
         # format='mixed' (pandas ≥ 2.0) evita el UserWarning; fallback para versiones anteriores
         try:
             parsed = pd.to_datetime(no_nulos, errors="coerce", format="mixed", dayfirst=True)

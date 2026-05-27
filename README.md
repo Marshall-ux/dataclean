@@ -69,6 +69,35 @@ Abrí el navegador en **http://localhost:5001**
 
 ---
 
+## Ejecutar con Docker
+
+Si ya tenés Docker Desktop instalado, podés levantar la app sin instalar Python localmente.
+
+```bash
+# 1. Crear archivo de entorno (solo la primera vez)
+copy .env.example .env
+
+# 2. Construir y levantar el contenedor
+docker compose up --build
+```
+
+Abrí el navegador en **http://localhost:5001**
+
+### Comandos útiles
+
+```bash
+# Levantar en segundo plano
+docker compose up -d --build
+
+# Ver logs
+docker compose logs -f
+
+# Detener y eliminar contenedores/red
+docker compose down
+```
+
+---
+
 ## Estructura del proyecto
 
 ```
