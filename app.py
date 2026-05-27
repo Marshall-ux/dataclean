@@ -25,6 +25,8 @@ setup_logging()
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+from werkzeug.middleware.proxy_fix import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 # ── Seguridad ─────────────────────────────────────────────────────────────────
 app.secret_key = os.environ.get("SECRET_KEY", "dev-insecure-key-cambiame-en-produccion")
