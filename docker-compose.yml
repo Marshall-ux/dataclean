@@ -1,0 +1,15 @@
+services:
+  dataclean:
+    build: .
+    container_name: dataclean_app
+    ports:
+      - "5001:5001"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PORT: "${PORT:-5001}"
+      FLASK_DEBUG: "${FLASK_DEBUG:-false}"
+      CORS_ORIGINS: "${CORS_ORIGINS:-*}"
+      SECRET_KEY: "${SECRET_KEY:-dev-insecure-key-cambiame-en-produccion}"
+    restart: unless-stopped
