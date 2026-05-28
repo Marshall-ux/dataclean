@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showLoading();
 
-        fetch('/', { method: 'POST', body: formData })
+        fetch('/dataclean/', { method: 'POST', body: formData })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
