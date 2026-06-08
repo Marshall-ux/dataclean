@@ -4,6 +4,9 @@ services:
     container_name: dataclean_app
     ports:
       - "5001:5001"
+    volumes:
+      - ./templates:/app/templates
+      - ./static:/app/static
     env_file:
       - path: .env
         required: false

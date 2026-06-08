@@ -1,13 +1,14 @@
 :root {
-    --bg-color: #0B0E14;
-    --card-bg: rgba(20, 24, 34, 0.6);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --text-main: #F0F2F5;
-    --text-muted: #9BA3AF;
-    --primary: #6C5CE7;
-    --primary-hover: #5A4BDE;
-    --success: #00B894;
-    --error: #FF7675;
+    --bg-color: #FFFFFF;
+    --card-bg: #FFFFFF;
+    --card-border: #E5E7EB;
+    --text-main: #111111;
+    --text-muted: #6B7280;
+    --primary: #00A82D;
+    --primary-hover: #008F26;
+    --primary-soft: rgba(0, 168, 45, 0.08);
+    --success: #00A82D;
+    --error: #DC2626;
 }
 
 * {
@@ -20,65 +21,57 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-main);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
     overflow-x: hidden;
-    position: relative;
-    padding: 20px;
 }
 
-.background-elements {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
+/* ── Header de sitio (ancho completo) ─────────────────────────────────────── */
+.site-header {
+    width: 100%;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--card-border);
+    padding: 18px 32px;
 }
 
-.blob {
-    position: absolute;
-    filter: blur(80px);
-    opacity: 0.5;
-    border-radius: 50%;
+.site-header-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-.blob-1 {
-    top: -10%; right: -10%;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(108,92,231,0.3) 0%, rgba(11,14,20,0) 70%);
-}
-
-.blob-2 {
-    bottom: -20%; left: -10%;
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(0,184,148,0.15) 0%, rgba(11,14,20,0) 70%);
+.site-logo {
+    height: 52px;
+    width: auto;
+    display: block;
+    object-fit: contain;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     width: 100%;
-    z-index: 1;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
 }
 
-header {
+.page-header {
     text-align: center;
     margin-bottom: 40px;
 }
 
-header h1 {
+.page-header h1 {
     font-size: 2.8rem;
     font-weight: 700;
     margin-bottom: 10px;
     letter-spacing: -1px;
+    color: var(--text-main);
 }
 
-header h1 span {
+.page-header h1 span {
     color: var(--primary);
 }
 
-header p {
+.page-header p {
     color: var(--text-muted);
     font-size: 1.1rem;
 }
@@ -86,20 +79,18 @@ header p {
 .upload-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border-radius: 20px;
     padding: 50px 30px;
     text-align: center;
     transition: all 0.3s ease;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
     margin-bottom: 40px;
 }
 
 .upload-card.dragover {
     border-color: var(--primary);
-    background: rgba(108,92,231,0.05);
-    transform: scale(1.02);
+    background: var(--primary-soft);
+    transform: scale(1.01);
 }
 
 #file-input {
@@ -110,12 +101,12 @@ header p {
     width: 80px;
     height: 80px;
     margin: 0 auto 20px;
-    background: rgba(255,255,255,0.03);
+    background: var(--primary-soft);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--card-border);
+    border: 1px solid rgba(0, 168, 45, 0.2);
     color: var(--primary);
 }
 
@@ -135,13 +126,14 @@ header p {
 
 .upload-clickable:hover .icon-container {
     border-color: var(--primary);
-    background: rgba(108,92,231,0.08);
+    background: rgba(0, 168, 45, 0.12);
 }
 
 .upload-form h2 {
     font-size: 1.5rem;
     margin-bottom: 8px;
     font-weight: 600;
+    color: var(--text-main);
 }
 
 .upload-form .subtitle {
@@ -157,6 +149,7 @@ header p {
     overflow: hidden;
     text-align: left;
     cursor: default;
+    background: #FAFAFA;
 }
 
 .options-summary {
@@ -198,7 +191,7 @@ details[open] .options-summary::before {
     grid-template-columns: 1fr 1fr;
     gap: 2px;
     padding: 4px 8px 12px;
-    background: rgba(255,255,255,0.01);
+    background: #FFFFFF;
 }
 
 .option-item {
@@ -212,7 +205,7 @@ details[open] .options-summary::before {
 }
 
 .option-item:hover {
-    background: rgba(255,255,255,0.04);
+    background: var(--primary-soft);
 }
 
 .option-item input[type="checkbox"] {
@@ -221,12 +214,13 @@ details[open] .options-summary::before {
     width: 16px;
     height: 16px;
     min-width: 16px;
-    border: 1.5px solid rgba(255,255,255,0.25);
+    border: 1.5px solid #D1D5DB;
     border-radius: 4px;
     margin-top: 3px;
     cursor: pointer;
     position: relative;
     transition: border-color 0.2s, background 0.2s;
+    background: #FFFFFF;
 }
 
 .option-item input[type="checkbox"]:checked {
@@ -305,14 +299,15 @@ details[open] .options-summary::before {
 }
 
 .btn-secondary:hover {
-    background: rgba(255,255,255,0.05);
-    color: white;
+    background: #F9FAFB;
+    color: var(--text-main);
+    border-color: #D1D5DB;
 }
 
 .spinner {
     width: 50px;
     height: 50px;
-    border: 4px solid rgba(255,255,255,0.1);
+    border: 4px solid #E5E7EB;
     border-left-color: var(--primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -325,8 +320,8 @@ details[open] .options-summary::before {
 
 .success-icon {
     color: var(--success);
-    border-color: rgba(0,184,148,0.2);
-    background: rgba(0,184,148,0.05);
+    border-color: rgba(0, 168, 45, 0.25);
+    background: var(--primary-soft);
 }
 
 .error-text {
@@ -342,7 +337,7 @@ details[open] .options-summary::before {
 }
 
 .feature-item {
-    background: rgba(255,255,255,0.02);
+    background: #FAFAFA;
     border: 1px solid var(--card-border);
     padding: 20px;
     border-radius: 15px;
@@ -353,7 +348,7 @@ details[open] .options-summary::before {
 
 .feature-icon {
     font-size: 1.5rem;
-    background: rgba(255,255,255,0.05);
+    background: var(--primary-soft);
     padding: 10px;
     border-radius: 10px;
 }
@@ -362,6 +357,7 @@ details[open] .options-summary::before {
     font-size: 1.05rem;
     margin-bottom: 6px;
     font-weight: 600;
+    color: var(--text-main);
 }
 
 .feature-item p {
@@ -370,7 +366,7 @@ details[open] .options-summary::before {
     line-height: 1.5;
 }
 
-/* --- Secciones Añadidas --- */
+/* --- Secciones --- */
 .section {
     padding: 60px 0;
     margin-top: 40px;
@@ -378,16 +374,22 @@ details[open] .options-summary::before {
 }
 
 .section.alt {
-    background: rgba(255,255,255,0.01);
+    background: #FAFAFA;
     border-radius: 20px;
     padding: 40px 30px;
+    border: 1px solid var(--card-border);
 }
 
 .section h2 {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: white;
+    color: var(--text-main);
     text-align: center;
+}
+
+.section h2 span,
+.section strong {
+    color: var(--primary);
 }
 
 .section > p {
@@ -402,7 +404,6 @@ details[open] .options-summary::before {
     gap: 30px;
 }
 
-/* Tablas Antes/Después */
 .table-wrapper {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -422,10 +423,11 @@ th, td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid var(--card-border);
+    color: var(--text-main);
 }
 
 th {
-    background: rgba(255,255,255,0.03);
+    background: #F9FAFB;
     font-weight: 600;
     color: var(--primary);
 }
@@ -446,7 +448,6 @@ tr:last-child td {
     font-style: italic;
 }
 
-/* Pasos */
 .steps {
     list-style: none;
     max-width: 600px;
@@ -454,12 +455,13 @@ tr:last-child td {
 }
 
 .steps li {
-    background: rgba(255,255,255,0.02);
+    background: #FFFFFF;
     border: 1px solid var(--card-border);
     padding: 20px;
     border-radius: 12px;
     margin-bottom: 15px;
     line-height: 1.5;
+    color: var(--text-main);
 }
 
 .steps strong {
@@ -467,9 +469,8 @@ tr:last-child td {
     font-weight: 600;
 }
 
-/* FAQ */
 .faq-item {
-    background: rgba(255,255,255,0.02);
+    background: #FFFFFF;
     border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 25px;
@@ -478,7 +479,7 @@ tr:last-child td {
 
 .faq-item h3 {
     margin-bottom: 10px;
-    color: white;
+    color: var(--text-main);
     font-size: 1.1rem;
 }
 
@@ -492,7 +493,16 @@ tr:last-child td {
 }
 
 @media (max-width: 600px) {
-    header h1 { font-size: 2.2rem; }
+    .site-header {
+        padding: 14px 16px;
+    }
+
+    .site-logo {
+        height: 40px;
+    }
+
+    .page-header h1 { font-size: 2.2rem; }
     .upload-card { padding: 40px 20px; }
     .section.alt { padding: 40px 15px; }
+    .container { padding: 28px 16px 48px; }
 }
